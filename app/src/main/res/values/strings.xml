@@ -1,3 +1,47 @@
 <resources>
     <string name="app_name">Unit Converter</string>
+
+    <string-array name="unit_types_array">
+        <item>Length</item>
+        <item>Mass</item>
+        <item>Time</item>
+        <item>Temperature</item>
+    </string-array>
+
+    <string-array name="length_array">
+        <item>Kilometer</item>
+        <item>Meter</item>
+        <item>Centimeter</item>
+        <item>Millimeter</item>
+        <item>Mile</item>
+        <item>Yard</item>
+        <item>Foot</item>
+        <item>Inch</item>
+    </string-array>
+
+    <string-array name="mass_array">
+        <item>Tonne</item>
+        <item>Kilogram</item>
+        <item>Gram</item>
+        <item>Milligram</item>
+        <item>Stone</item>
+        <item>Pound</item>
+        <item>Ounce</item>
+    </string-array>
+
+    <string-array name="time_array">
+        <item>Second</item>
+        <item>Minute</item>
+        <item>Hour</item>
+        <item>Day</item>
+        <item>Week</item>
+        <item>Month</item>
+        <item>Calendar year</item>
+    </string-array>
+
+    <string-array name="temp_array">
+        <item>Celsius</item>
+        <item>Fahrenheit</item>
+        <item>Kelvin</item>
+    </string-array>
 </resources>

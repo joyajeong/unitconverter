@@ -1,6 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="app/src/main/res/drawable/buttons.xml" value="0.3260416666666667" />
+        <entry key="app/src/main/res/drawable/circle.xml" value="0.3260416666666667" />
+        <entry key="app/src/main/res/drawable/colour_cursor.xml" value="0.3260416666666667" />
+        <entry key="app/src/main/res/drawable/edit_text.xml" value="0.3260416666666667" />
+        <entry key="app/src/main/res/drawable/ic_baseline_arrow_forward_24.xml" value="0.3260416666666667" />
+        <entry key="app/src/main/res/drawable/input_box.xml" value="0.18385416666666668" />
+        <entry key="app/src/main/res/drawable/rectangle.xml" value="0.18385416666666668" />
+        <entry key="app/src/main/res/drawable/rectangle2.xml" value="0.18385416666666668" />
+        <entry key="app/src/main/res/drawable/shadow.xml" value="0.18385416666666668" />
+        <entry key="app/src/main/res/drawable/spinner_popup.xml" value="0.3260416666666667" />
+        <entry key="app/src/main/res/drawable/spinners.xml" value="0.3260416666666667" />
+        <entry key="app/src/main/res/drawable/toggle_off.xml" value="0.184375" />
+        <entry key="app/src/main/res/drawable/toggle_on.xml" value="0.184375" />
+        <entry key="app/src/main/res/drawable/toggle_selector.xml" value="0.3260416666666667" />
+        <entry key="app/src/main/res/drawable/toggle_text.xml" value="0.184375" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.2862129705789977" />
+        <entry key="app/src/main/res/layout/activity_result.xml" value="0.2943126247489694" />
+        <entry key="app/src/main/res/layout/spinner_item.xml" value="0.3098958333333333" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

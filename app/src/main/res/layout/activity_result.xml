@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/pink"
+    tools:context=".ResultActivity">
+
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="413dp"
+        android:layout_height="352dp"
+        android:background="@drawable/rectangle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnBack"
+        android:layout_width="122dp"
+        android:layout_height="39dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/buttons"
+        android:drawableLeft="@drawable/ic_baseline_arrow_back_24"
+        android:paddingLeft="10dp"
+        android:text="Go back"
+        android:textColorHighlight="@color/pink"
+        android:textColorLink="@color/pink"
+        app:layout_constraintEnd_toEndOf="@+id/formulaBackground"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/formulaBackground"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvInputUnit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="148dp"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toTopOf="@+id/tvInput"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/tvOutputUnit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="52dp"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        android:textColor="@color/pink"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvOutput"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/tvInput"
+        android:layout_width="380dp"
+        android:layout_height="98dp"
+        android:layout_marginBottom="32dp"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="70sp"
+        app:layout_constraintBottom_toTopOf="@+id/logoCircle"
+        app:layout_constraintEnd_toEndOf="@+id/tvInputUnit"
+        app:layout_constraintStart_toStartOf="@+id/tvInputUnit" />
+
+    <TextView
+        android:id="@+id/tvOutput"
+        android:layout_width="383dp"
+        android:layout_height="102dp"
+        android:layout_marginTop="32dp"
+        android:textAlignment="center"
+        android:textColor="@color/pink"
+        android:textSize="70sp"
+        app:layout_constraintEnd_toEndOf="@+id/tvOutputUnit"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="@+id/tvOutputUnit"
+        app:layout_constraintTop_toBottomOf="@+id/logoCircle" />
+
+    <ImageView
+        android:id="@+id/logoCircle"
+        android:layout_width="97dp"
+        android:layout_height="95dp"
+        android:layout_marginBottom="284dp"
+        android:background="@drawable/shadow"
+        android:elevation="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/view"
+        app:layout_constraintStart_toStartOf="@+id/view"
+        app:srcCompat="@drawable/circle" />
+
+    <ImageView
+        android:id="@+id/logoArrow"
+        android:layout_width="50dp"
+        android:layout_height="66dp"
+        android:elevation="6dp"
+        android:rotation="90"
+        app:layout_constraintBottom_toBottomOf="@+id/logoCircle"
+        app:layout_constraintEnd_toEndOf="@+id/logoCircle"
+        app:layout_constraintHorizontal_bias="0.489"
+        app:layout_constraintStart_toStartOf="@+id/logoCircle"
+        app:layout_constraintTop_toTopOf="@+id/logoCircle"
+        app:layout_constraintVertical_bias="0.551"
+        app:srcCompat="@drawable/ic_baseline_sync_alt_24" />
+
+    <ImageView
+        android:id="@+id/formulaBackground"
+        android:layout_width="361dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="108dp"
+        android:background="@drawable/buttons"
+        app:layout_constraintEnd_toEndOf="@+id/tvInputUnit"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="@+id/tvInputUnit"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/toggleBackground"
+        android:layout_width="201dp"
+        android:layout_height="33dp"
+        android:background="@drawable/toggle_off"
+        app:layout_constraintBottom_toBottomOf="@+id/tBtn6dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.457"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tBtn2dp"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ToggleButton
+        android:id="@+id/tBtn6dp"
+        android:layout_width="67dp"
+        android:layout_height="32dp"
+        android:layout_marginEnd="100dp"
+        android:background="@drawable/toggle_selector"
+        android:text="6 d.p."
+        android:textAllCaps="false"
+        android:textColor="@color/toggle_text_color"
+        android:textOff="6 d.p."
+        android:textOn="6 d.p."
+        style="?android:attr/borderlessButtonStyle"
+        app:layout_constraintBottom_toBottomOf="@+id/tBtn4dp"
+        app:layout_constraintEnd_toEndOf="@+id/tvOutput"
+        app:layout_constraintTop_toTopOf="@+id/tBtn4dp" />
+
+    <ToggleButton
+        android:id="@+id/tBtn4dp"
+        android:layout_width="67dp"
+        android:layout_height="32dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/toggle_selector"
+        android:text="ToggleButton"
+        android:textAllCaps="false"
+        android:textOff="4 d.p."
+        android:textOn="4 d.p."
+        android:textColor="@color/toggle_text_color"
+        style="?android:attr/borderlessButtonStyle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tBtn6dp" />
+
+    <ToggleButton
+        android:id="@+id/tBtn2dp"
+        android:layout_width="67dp"
+        android:layout_height="32dp"
+        android:background="@drawable/toggle_selector"
+        android:textAllCaps="false"
+        android:textOff="2 d.p."
+        android:textOn="2 d.p."
+        android:textColor="@color/toggle_text_color"
+        style="?android:attr/borderlessButtonStyle"
+        app:layout_constraintBottom_toBottomOf="@+id/tBtn4dp"
+        app:layout_constraintEnd_toStartOf="@+id/tBtn4dp"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/tvOutput"
+        app:layout_constraintTop_toTopOf="@+id/tBtn4dp" />
+
+    <TextView
+        android:id="@+id/tvFormulaLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:text="Formula:"
+        android:textColor="@color/black"
+        android:textColorHighlight="@color/pink"
+        android:textColorLink="@color/pink"
+        app:layout_constraintBottom_toBottomOf="@+id/formulaBackground"
+        app:layout_constraintStart_toStartOf="@+id/formulaBackground"
+        app:layout_constraintTop_toTopOf="@+id/formulaBackground" />
+
+    <TextView
+        android:id="@+id/tvForumla"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:textColor="@color/black"
+        android:textColorHighlight="@color/pink"
+        android:textColorLink="@color/pink"
+        app:layout_constraintBottom_toBottomOf="@+id/tvFormulaLabel"
+        app:layout_constraintStart_toEndOf="@+id/tvFormulaLabel"
+        app:layout_constraintTop_toTopOf="@+id/tvFormulaLabel" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
