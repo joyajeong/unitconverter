@@ -3,6 +3,7 @@ package au.edu.unsw.infs3634.unitconverter;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,8 +23,9 @@ public class ResultActivity extends AppCompatActivity {
     ToggleButton twodp, fourdp, sixdp;
     Boolean twodpClicked = true, fourdpClicked = false, sixdpClicked = false;
     Double result;
-    TextView tvInputUnit, tvOutputUnit, tvInput, tvOutput;
+    TextView tvInputUnit, tvOutputUnit, tvInput, tvOutput, tvFormula;
     String input, unitType, inputUnit, outputUnit, formattedResult;
+    int animateCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +49,11 @@ public class ResultActivity extends AppCompatActivity {
         //Initialising result
         result = 0.0;
 
+        //depends on if i use it
+        String[] unitTypes = getResources().getStringArray(R.array.unit_types_array);
+
         //Calculate the result based on type of unit selected
-        if (unitType.equals("Length")) {
+        if (unitType.equals("Length")) { //unitTypes[0]???
             result = lengthCalculate(inputUnit, outputUnit, inputNum);
         } else if (unitType.equals("Mass")) {
             result = massCalculate(inputUnit, outputUnit, inputNum);
@@ -88,6 +93,10 @@ public class ResultActivity extends AppCompatActivity {
         tvInput.setText(input);
         displayResults();
 
+        //Display formula
+        tvFormula = findViewById(R.id.tvForumla);
+        tvFormula.setText(Formula.getFormula(inputUnit, outputUnit));
+
         //When the back button is clicked
         Button back = findViewById(R.id.btnBack);
         back.setOnClickListener(new View.OnClickListener() {
@@ -108,22 +117,27 @@ public class ResultActivity extends AppCompatActivity {
     //Display results
     private void displayResults() {
         int digits = 0;
-        //!!!! -------idk if this should be in here or in the onCreate---------- !!!!!!!!
-        //If the result is a whole number don't show the decimal toggle buttons
         if (result % 1 == 0) {
+            //If the result is a whole number don't show the decimal toggle buttons
             hideToggleButtons();
             formattedResult = formatNumber(result, 0);
+            animateIntTextView(0, Integer.valueOf(formattedResult), tvOutput);
         } else {
             //If the result has decimals, format the number to show the selected number of decimals
             formattedResult = formatNumber(result, chosenDecimalNum());
+            //Animate the results only once
+            if (animateCount == 0) {
+                animateTextView("0", formattedResult, tvOutput);
+                animateCount++;
+            }
         }
 
-        //If the number of digits exceed a certain number, the font needs to be smaller to display
+        //If the number of digits exceed a certain number, the font needs to be smaller to fit the screen
         digits = numberOfDigits(formattedResult);
         changeTextSize(digits, tvOutput);
 
-        Log.i("formatted result", formattedResult);
         tvOutput.setText(formattedResult);
+        Log.i("formatted result", formattedResult);
     }
 
     private int numberOfDigits(String num) {
@@ -137,6 +151,7 @@ public class ResultActivity extends AppCompatActivity {
         return digits;
     }
 
+    //Change text size depending on the number of digits so they fit on the screen
     private void changeTextSize(int digits, TextView tv) {
         if (digits > 13) {
             tv.setTextSize(30);
@@ -217,6 +232,33 @@ public class ResultActivity extends AppCompatActivity {
         return 0;
     }
 
+    public void animateTextView(String initialValue, String finalValue, final TextView textView) {
+        ValueAnimator valueAnimator = ValueAnimator.ofFloat(Float.valueOf(initialValue), Float.valueOf(finalValue));
+        valueAnimator.setDuration(1000);
+
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                textView.setText(valueAnimator.getAnimatedValue().toString());
+            }
+        });
+        valueAnimator.start();
+    }
+
+    public void animateIntTextView(int initialValue, int finalValue, final TextView textView) {
+        ValueAnimator valueAnimator = ValueAnimator.ofInt(initialValue, finalValue);
+        valueAnimator.setDuration(1000);
+
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                textView.setText(valueAnimator.getAnimatedValue().toString());
+            }
+        });
+        valueAnimator.start();
+    }
+
+    //Calculations and conversion numbers sourced from https://www.unitconverters.net/
     //-------------------------------CALCULATE LENGTH UNITS-------------------------------------//
     private double lengthCalculate(String inputUnit, String outputUnit, double value) {
         if (inputUnit.equals("Kilometer")) {
@@ -435,7 +477,7 @@ public class ResultActivity extends AppCompatActivity {
         }
         return 0;
     }
-//https://www.unitconverters.net/weight-and-mass-converter.html
+
     private double tTo(String outputUnit, double value) {
         switch (outputUnit) {
             case "Tonne":

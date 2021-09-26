@@ -28,7 +28,9 @@
         android:layout_width="182dp"
         android:layout_height="84dp"
         android:layout_marginEnd="80dp"
+        android:gravity="center"
         android:text="Enter a number to convert"
+        android:textAlignment="viewStart"
         android:textColor="@color/black"
         android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView"
@@ -96,6 +98,7 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/relativeLayout"
         android:layout_width="124dp"
         android:layout_height="38dp"
         android:layout_weight=".28"
@@ -162,7 +165,7 @@
         <Spinner
             android:id="@+id/unitTypeChoice"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_centerVertical="true"
             android:layout_gravity="center"
             android:layout_marginLeft="5dp"
@@ -179,7 +182,7 @@
             android:layout_centerVertical="true"
             android:layout_gravity="center"
             android:layout_marginRight="0dp"
-            android:src="@drawable/ic_baseline_arrow_drop_down_24" />
+            android:src="@drawable/ic_baseline_arrow_drop_down_24_bigger" />
 
     </RelativeLayout>
 
@@ -202,7 +205,7 @@
         android:layout_width="58dp"
         android:layout_height="41dp"
         android:layout_marginStart="56dp"
-        android:layout_marginTop="180dp"
+        android:layout_marginTop="188dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/circle" />
@@ -217,6 +220,28 @@
         app:layout_constraintStart_toStartOf="@+id/imageView"
         app:layout_constraintTop_toTopOf="@+id/imageView"
         app:srcCompat="@drawable/ic_baseline_sync_alt_24" />
+
+    <TextView
+        android:id="@+id/tvSameUnitAlert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:text="Please select different units!"
+        app:layout_constraintEnd_toEndOf="@+id/relativeLayout"
+        app:layout_constraintHorizontal_bias="0.517"
+        app:layout_constraintStart_toStartOf="@+id/btnBack"
+        app:layout_constraintTop_toBottomOf="@+id/btnBack" />
+
+    <TextView
+        android:id="@+id/tvNoNumberAlert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Please enter a number!"
+        app:layout_constraintEnd_toEndOf="@+id/relativeLayout"
+        app:layout_constraintHorizontal_bias="0.517"
+        app:layout_constraintStart_toStartOf="@+id/btnBack"
+        app:layout_constraintTop_toBottomOf="@+id/btnBack" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

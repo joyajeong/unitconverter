@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
     public String inputUnit, outputUnit, unitType;
     public Spinner inputSpinner, outputSpinner;
+    public TextView tvSameUnitAlert, tvNoNumberAlert;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +27,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         EditText input = (EditText)findViewById(R.id.inputNumber);
+        tvSameUnitAlert = findViewById(R.id.tvSameUnitAlert);
+        tvSameUnitAlert.setVisibility(View.INVISIBLE);
+        tvNoNumberAlert = findViewById(R.id.tvNoNumberAlert);
+        tvNoNumberAlert.setVisibility(View.INVISIBLE);
+
 
         //spinner code adapted from https://developer.android.com/guide/topics/ui/controls/spinner
         Spinner unitTypeSpinner = (Spinner) findViewById(R.id.unitTypeChoice);
@@ -129,8 +135,6 @@ public class MainActivity extends AppCompatActivity {
                         //setting the spinners with the random units
                         inputSpinner.setSelection(randomA);
                         outputSpinner.setSelection(randomB);
-//                        inputUnit = randomUnit(getResources().getStringArray(R.array.temp_array));
-//                        outputUnit = randomUnit(getResources().getStringArray(R.array.temp_array));
                         break;
 
                 }
@@ -142,19 +146,24 @@ public class MainActivity extends AppCompatActivity {
         btnConvert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                tvSameUnitAlert.setVisibility(View.INVISIBLE);
                 try {
                     //Checking if input is a number
                     Double number = Double.parseDouble(input.getText().toString());
+                    tvNoNumberAlert.setVisibility(View.INVISIBLE);
                     String value = input.getText().toString();
                     Intent intent = new Intent(MainActivity.this, ResultActivity.class);
                     intent.putExtra("Input value", value);
                     intent.putExtra("Unit type", unitType);
                     intent.putExtra("Input unit", inputUnit);
                     intent.putExtra("Output unit", outputUnit);
-                    startActivity(intent);
+                    //Checking if 2 same units are chosen e.g. km and km
+                    if (!unitsSame()) {
+                        startActivity(intent);
+                    }
                 } catch (NumberFormatException ex) {
                     Log.e("INPUT ERROR", "Entered value is not a number");
-                    //Do some error message
+                    tvNoNumberAlert.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -180,5 +189,14 @@ public class MainActivity extends AppCompatActivity {
         int randomNo = rand.nextInt(array.length);
 //        String randomUnit = array[randomNo];
         return randomNo;
+    }
+
+    private boolean unitsSame() {
+        //Showing a message when the user selects 2 same units
+        if (inputUnit.equals(outputUnit)) {
+            tvSameUnitAlert.setVisibility(View.VISIBLE);
+            return true;
+        }
+        return false;
     }
 }
