@@ -17,9 +17,9 @@ import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
-    public String inputUnit, outputUnit, unitType;
-    public Spinner inputSpinner, outputSpinner;
-    public TextView tvSameUnitAlert, tvNoNumberAlert;
+    private String inputUnit, outputUnit, unitType, selectedItem;
+    private Spinner unitTypeSpinner, inputSpinner, outputSpinner;
+    private TextView tvSameUnitAlert, tvNoNumberAlert;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,19 +32,13 @@ public class MainActivity extends AppCompatActivity {
         tvNoNumberAlert = findViewById(R.id.tvNoNumberAlert);
         tvNoNumberAlert.setVisibility(View.INVISIBLE);
 
-
         //spinner code adapted from https://developer.android.com/guide/topics/ui/controls/spinner
-        Spinner unitTypeSpinner = (Spinner) findViewById(R.id.unitTypeChoice);
+        unitTypeSpinner = (Spinner) findViewById(R.id.unitTypeChoice);
         inputSpinner = (Spinner) findViewById(R.id.inputChoices);
         outputSpinner = (Spinner) findViewById(R.id.outputChoices);
 
-        //Unit type spinner
-        ArrayAdapter<CharSequence> adapter3 = ArrayAdapter.createFromResource(this,
-                R.array.unit_types_array, android.R.layout.simple_spinner_item);
-        adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        unitTypeSpinner.setAdapter(adapter3);
-
         //changing the unit options based on the unit type chosen
+        setSpinners(R.array.unit_types_array, unitTypeSpinner);
         unitTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
@@ -52,16 +46,23 @@ public class MainActivity extends AppCompatActivity {
                 ((TextView) parent.getChildAt(0)).setTextSize(20);
 
                 unitType = parent.getItemAtPosition(pos).toString();
-                if (unitType.equals("Length")) {
-                    setSpinners(R.array.length_array);
-                } else if (unitType.equals("Time")) {
-                    setSpinners(R.array.time_array);
-                } else if (unitType.equals("Mass")) {
-                    setSpinners(R.array.mass_array);
-                } else if (unitType.equals("Temperature")) {
-                    setSpinners(R.array.temp_array);
-                } else {
-                    //do something
+                switch (unitType) {
+                    case "Length":
+                        setSpinners(R.array.length_array, inputSpinner);
+                        setSpinners(R.array.length_array, outputSpinner);
+                        break;
+                    case "Time":
+                        setSpinners(R.array.time_array, inputSpinner);
+                        setSpinners(R.array.time_array, outputSpinner);
+                        break;
+                    case "Mass":
+                        setSpinners(R.array.mass_array, inputSpinner);
+                        setSpinners(R.array.mass_array, outputSpinner);
+                        break;
+                    case "Temperature":
+                        setSpinners(R.array.temp_array, inputSpinner);
+                        setSpinners(R.array.temp_array, outputSpinner);
+                        break;
                 }
             }
             @Override
@@ -70,31 +71,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //getting the input unit
-        inputSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-                ((TextView) parent.getChildAt(0)).setTextColor(Color.parseColor("#FFFFFF"));
-                inputUnit = parent.getItemAtPosition(pos).toString();
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-                //write error message
-            }
-        });
-
-        //getting the output unit
-        outputSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-                ((TextView) parent.getChildAt(0)).setTextColor(Color.parseColor("#FFFFFF"));
-                outputUnit = parent.getItemAtPosition(pos).toString();
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-                //write error message
-            }
-        });
+        //when individual units are selected, assign to variables
+        inputSpinner.setOnItemSelectedListener(myListener);
+        outputSpinner.setOnItemSelectedListener(myListener);
 
         //if random button is clicked
         Button btnRandom = findViewById(R.id.btnRandom);
@@ -102,41 +81,24 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 int randomA, randomB;
+                int[] randomUnits;
                 switch (unitType) {
-                    //maybe split the inside
                     case "Length":
-                        //getting 2 random units within the length array
-                        randomA = randomUnit(getResources().getStringArray(R.array.length_array));
-                        randomB = randomUnit(getResources().getStringArray(R.array.length_array));
-                        //setting the spinners with the random units
-                        inputSpinner.setSelection(randomA);
-                        outputSpinner.setSelection(randomB);
+                        randomUnits = generateRandomUnits(getResources().getStringArray(R.array.length_array));
+                        setRandomUnits(randomUnits);
                         break;
                     case "Mass":
-                        //getting 2 random units within the mass array
-                        randomA = randomUnit(getResources().getStringArray(R.array.mass_array));
-                        randomB = randomUnit(getResources().getStringArray(R.array.mass_array));
-                        //setting the spinners with the random units
-                        inputSpinner.setSelection(randomA);
-                        outputSpinner.setSelection(randomB);
+                        randomUnits = generateRandomUnits(getResources().getStringArray(R.array.mass_array));
+                        setRandomUnits(randomUnits);
                         break;
                     case "Time":
-                        //getting 2 random units within the time array
-                        randomA = randomUnit(getResources().getStringArray(R.array.time_array));
-                        randomB = randomUnit(getResources().getStringArray(R.array.time_array));
-                        //setting the spinners with the random units
-                        inputSpinner.setSelection(randomA);
-                        outputSpinner.setSelection(randomB);
+                        randomUnits = generateRandomUnits(getResources().getStringArray(R.array.time_array));
+                        setRandomUnits(randomUnits);
                         break;
                     case "Temperature":
-                        //getting 2 random units within the temperature array
-                        randomA = randomUnit(getResources().getStringArray(R.array.temp_array));
-                        randomB = randomUnit(getResources().getStringArray(R.array.temp_array));
-                        //setting the spinners with the random units
-                        inputSpinner.setSelection(randomA);
-                        outputSpinner.setSelection(randomB);
+                        randomUnits = generateRandomUnits(getResources().getStringArray(R.array.temp_array));
+                        setRandomUnits(randomUnits);
                         break;
-
                 }
             }
         });
@@ -150,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     //Checking if input is a number
                     Double number = Double.parseDouble(input.getText().toString());
+
                     tvNoNumberAlert.setVisibility(View.INVISIBLE);
                     String value = input.getText().toString();
                     Intent intent = new Intent(MainActivity.this, ResultActivity.class);
@@ -169,26 +132,25 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void setSpinners(int array) {
-        //setting input spinner
+    private void setSpinners(int array, Spinner spinner) {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(MainActivity.this,
                 array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        inputSpinner.setAdapter(adapter);
-
-        //setting output spinner
-        ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(MainActivity.this,
-                array, android.R.layout.simple_spinner_item);
-        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        outputSpinner.setAdapter(adapter1);
+        spinner.setAdapter(adapter);
     }
 
-    private int randomUnit(String[] array) {
+    private int[] generateRandomUnits(String[] array) {
+        int[] randomUnits = new int[2];
         Random rand = new Random();
-        //randomNo is redundant
-        int randomNo = rand.nextInt(array.length);
-//        String randomUnit = array[randomNo];
-        return randomNo;
+        for (int i = 0; i < 2; i++) {
+            randomUnits[i] = rand.nextInt(array.length);
+        }
+        return randomUnits;
+    }
+
+    private void setRandomUnits(int[] randomUnits) {
+        inputSpinner.setSelection(randomUnits[0]);
+        outputSpinner.setSelection(randomUnits[1]);
     }
 
     private boolean unitsSame() {
@@ -199,4 +161,23 @@ public class MainActivity extends AppCompatActivity {
         }
         return false;
     }
+
+    AdapterView.OnItemSelectedListener myListener = new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+            ((TextView) parent.getChildAt(0)).setTextColor(Color.parseColor("#FFFFFF"));
+            int spinnerId = parent.getId();
+            switch(spinnerId) {
+                case R.id.inputChoices:
+                    inputUnit = parent.getItemAtPosition(pos).toString();
+                case R.id.outputChoices:
+                    outputUnit  = parent.getItemAtPosition(pos).toString();
+            }
+        }
+        @Override
+        public void onNothingSelected(AdapterView<?> adapterView) {
+            //write error message
+        }
+    };
+
 }

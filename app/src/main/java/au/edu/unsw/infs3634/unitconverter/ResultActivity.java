@@ -20,7 +20,8 @@ import java.text.NumberFormat;
 
 public class ResultActivity extends AppCompatActivity {
 
-    ToggleButton twodp, fourdp, sixdp;
+    //make all the variables private?
+    private ToggleButton twodp, fourdp, sixdp;
     Boolean twodpClicked = true, fourdpClicked = false, sixdpClicked = false;
     Double result;
     TextView tvInputUnit, tvOutputUnit, tvInput, tvOutput, tvFormula;
@@ -32,7 +33,7 @@ public class ResultActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
 
-        //Receive input from MainActivity
+        //receive input from MainActivity
         Bundle bundle = getIntent().getExtras();
         input = bundle.getString("Input value");
         unitType = bundle.getString("Unit type");
@@ -46,7 +47,6 @@ public class ResultActivity extends AppCompatActivity {
 
         //Convert input from string to double
         Double inputNum = Double.parseDouble(input);
-        //Initialising result
         result = 0.0;
 
         //depends on if i use it
@@ -67,11 +67,11 @@ public class ResultActivity extends AppCompatActivity {
 
         Log.i("RESULT", String.valueOf(result));
 
-        //Toggle buttons to choose decimal places
+        //toggle buttons to choose decimal places
         twodp = (ToggleButton)findViewById(R.id.tBtn2dp);
         fourdp = (ToggleButton)findViewById(R.id.tBtn4dp);
         sixdp = (ToggleButton)findViewById(R.id.tBtn6dp);
-        //Make 2 dp the default
+        //make 2 dp the default
         twodp.setChecked(true);
         twodp.setClickable(false);
 
@@ -79,7 +79,7 @@ public class ResultActivity extends AppCompatActivity {
         fourdp.setOnCheckedChangeListener(changeChecker);
         sixdp.setOnCheckedChangeListener(changeChecker);
 
-        //Display all the numbers and text
+        //display all the numbers and text
         tvInputUnit = findViewById(R.id.tvInputUnit);
         tvOutputUnit = findViewById(R.id.tvOutputUnit);
         tvInput = findViewById(R.id.tvInput);
@@ -93,11 +93,11 @@ public class ResultActivity extends AppCompatActivity {
         tvInput.setText(input);
         displayResults();
 
-        //Display formula
+        //display formula
         tvFormula = findViewById(R.id.tvForumla);
         tvFormula.setText(Formula.getFormula(inputUnit, outputUnit));
 
-        //When the back button is clicked
+        //when the back button is clicked
         Button back = findViewById(R.id.btnBack);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,13 +108,11 @@ public class ResultActivity extends AppCompatActivity {
         });
     }
 
-    //Format number
     private String formatNumber(Double num, int dp) {
         String formatted = String.format("%."+ Integer.toString(dp) +"f", num);
         return formatted;
     }
 
-    //Display results
     private void displayResults() {
         int digits = 0;
         if (result % 1 == 0) {
@@ -162,7 +160,7 @@ public class ResultActivity extends AppCompatActivity {
         }
     }
 
-    //Handling the toggle buttons
+    //handling the toggle buttons
     CompoundButton.OnCheckedChangeListener changeChecker = new CompoundButton.OnCheckedChangeListener() {
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             if (isChecked) {
@@ -209,7 +207,6 @@ public class ResultActivity extends AppCompatActivity {
         }
     };
 
-    //Hides all the toggle buttons
     public void hideToggleButtons() {
         ImageView background = (ImageView)findViewById(R.id.toggleBackground);
         background.setVisibility(View.INVISIBLE);
@@ -218,7 +215,6 @@ public class ResultActivity extends AppCompatActivity {
         sixdp.setVisibility(View.INVISIBLE);
     }
 
-    //Returns the number of decimal places that is selected
     public int chosenDecimalNum() {
         if (twodpClicked) {
             return 2;
@@ -258,7 +254,7 @@ public class ResultActivity extends AppCompatActivity {
         valueAnimator.start();
     }
 
-    //Calculations and conversion numbers sourced from https://www.unitconverters.net/
+    //Calculation formulas sourced from https://www.unitconverters.net/
     //-------------------------------CALCULATE LENGTH UNITS-------------------------------------//
     private double lengthCalculate(String inputUnit, String outputUnit, double value) {
         if (inputUnit.equals("Kilometer")) {

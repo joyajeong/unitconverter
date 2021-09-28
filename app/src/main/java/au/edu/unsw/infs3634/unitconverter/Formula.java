@@ -103,8 +103,25 @@ public class Formula {
         formulas.add(new Formula(t, st,  "1 " + t + " = " + "157.47304442 " +  st));
         formulas.add(new Formula(t, lb,  "1 " + t + " = " + "2204.6226218 " +  lb));
         formulas.add(new Formula(t, oz,  "1 " + t + " = " + "35273.96194958 " +  oz));
+        formulas.add(new Formula(kg, g,  "1 " + kg + " = " + "1000 " +  g));
+        formulas.add(new Formula(kg, mg,  "1 " + kg + " = " + "1000000 " +  mg));
+        formulas.add(new Formula(kg, st,  "1 " + st + " = " + "6.35029318 " +  kg));
+        formulas.add(new Formula(kg, lb,  "1 " + kg + " = " + "2.2046226218 " +  lb));
+        formulas.add(new Formula(kg, oz,  "1 " + kg + " = " + "35.27396195 " +  oz));
+        formulas.add(new Formula(g, mg,  "1 " + g + " = " + "1000 " +  mg));
+        formulas.add(new Formula(g, st,  "1 " + st + " = " + "6350.29318 " +  g));
+        formulas.add(new Formula(g, lb,  "1 " + lb + " = " + "453.59237 " +  g));
+        formulas.add(new Formula(g, oz,  "1 " + oz + " = " + "28.349523125 " +  g));
+        formulas.add(new Formula(mg, st,  "1 " + st + " = " + "6350293.18 " +  mg));
+        formulas.add(new Formula(mg, lb,  "1 " + lb + " = " + "453592.37 " +  mg));
+        formulas.add(new Formula(mg, oz,  "1 " + oz + " = " + "28349.523125 " +  mg));
+        formulas.add(new Formula(st, lb,  "1 " + st + " = " + "14 " +  lb));
+        formulas.add(new Formula(st, lb,  "1 " + st + " = " + "224 " +  oz));
+        formulas.add(new Formula(lb, oz,  "1 " + lb + " = " + "16 " +  oz));
 
-
+        formulas.add(new Formula(fah, cel, "(°C × 9/5) + 32 = °F"));
+        formulas.add(new Formula(fah, ke, "(K − 273.15) × 9/5 + 32 = °F"));
+        formulas.add(new Formula(cel, ke, "K − 273.15 = °C"));
 
         return formulas;
     }

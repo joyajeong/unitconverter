@@ -16,4 +16,5 @@
     <color name="transparent_pink2">#8CFF7384</color>
     <color name="pink_light">#FFE9EB</color>
     <color name="dark_grey">#232323</color>
+    <color name="text_shadow">#FFFFFF</color>
 </resources>

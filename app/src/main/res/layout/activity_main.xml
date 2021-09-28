@@ -28,10 +28,9 @@
         android:layout_width="182dp"
         android:layout_height="84dp"
         android:layout_marginEnd="80dp"
-        android:gravity="center"
+        android:gravity="center_vertical"
         android:text="Enter a number to convert"
-        android:textAlignment="viewStart"
-        android:textColor="@color/black"
+        android:textColor="@color/dark_grey"
         android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView"
         app:layout_constraintEnd_toEndOf="parent"
@@ -212,8 +211,8 @@
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="26dp"
+        android:layout_height="28dp"
         android:rotation="90"
         app:layout_constraintBottom_toBottomOf="@+id/imageView"
         app:layout_constraintEnd_toEndOf="@+id/imageView"
