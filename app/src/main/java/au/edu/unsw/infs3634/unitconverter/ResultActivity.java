@@ -49,20 +49,20 @@ public class ResultActivity extends AppCompatActivity {
         Double inputNum = Double.parseDouble(input);
         result = 0.0;
 
-        //depends on if i use it
-        String[] unitTypes = getResources().getStringArray(R.array.unit_types_array);
-
         //Calculate the result based on type of unit selected
-        if (unitType.equals("Length")) { //unitTypes[0]???
-            result = lengthCalculate(inputUnit, outputUnit, inputNum);
-        } else if (unitType.equals("Mass")) {
-            result = massCalculate(inputUnit, outputUnit, inputNum);
-        } else if (unitType.equals("Time")) {
-            result = timeCalculate(inputUnit, outputUnit, inputNum);
-        } else if (unitType.equals("Temperature")) {
-            result = tempCalculate(inputUnit, outputUnit, inputNum);
-        } else {
-           //do something
+        switch(unitType) {
+            case "Length":
+                result = lengthCalculate(inputUnit, outputUnit, inputNum);
+                break;
+            case "Mass":
+                result = massCalculate(inputUnit, outputUnit, inputNum);
+                break;
+            case "Time":
+                result = timeCalculate(inputUnit, outputUnit, inputNum);
+                break;
+            case "Temperature":
+                result = tempCalculate(inputUnit, outputUnit, inputNum);
+                break;
         }
 
         Log.i("RESULT", String.valueOf(result));
@@ -109,23 +109,23 @@ public class ResultActivity extends AppCompatActivity {
     }
 
     private String formatNumber(Double num, int dp) {
-        String formatted = String.format("%."+ Integer.toString(dp) +"f", num);
+        String formatted = String.format("%."+ dp +"f", num);
         return formatted;
     }
 
     private void displayResults() {
-        int digits = 0;
+        int digits;
         if (result % 1 == 0) {
             //If the result is a whole number don't show the decimal toggle buttons
             hideToggleButtons();
             formattedResult = formatNumber(result, 0);
-            animateIntTextView(0, Integer.valueOf(formattedResult), tvOutput);
+            animateTextView("0", formattedResult, tvOutput, false);
         } else {
             //If the result has decimals, format the number to show the selected number of decimals
             formattedResult = formatNumber(result, chosenDecimalNum());
             //Animate the results only once
             if (animateCount == 0) {
-                animateTextView("0", formattedResult, tvOutput);
+                animateTextView("0", formattedResult, tvOutput, true);
                 animateCount++;
             }
         }
@@ -139,7 +139,7 @@ public class ResultActivity extends AppCompatActivity {
     }
 
     private int numberOfDigits(String num) {
-        int digits = 0;
+        int digits;
         if (Double.valueOf(num) % 1 == 0) {
             digits = num.length();
         } else {
@@ -165,40 +165,31 @@ public class ResultActivity extends AppCompatActivity {
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             if (isChecked) {
                 if (buttonView == twodp) {
-                    //making sure only one button is clicked at a time
-                    fourdp.setChecked(false);
-                    sixdp.setChecked(false);
                     twodpClicked = true;
                     sixdpClicked = false;
                     fourdpClicked = false;
-                    //making sure user always has one button clicked
+                    //prevent double clicking
                     twodp.setClickable(false);
-                    fourdp.setClickable(true);
-                    sixdp.setClickable(true);
+
+                    toggleClickManager(fourdp, sixdp);
                 }
                 if (buttonView == fourdp) {
-                    //making sure only one button is clicked at a time
-                    twodp.setChecked(false);
-                    sixdp.setChecked(false);
                     fourdpClicked = true;
                     twodpClicked = false;
                     sixdpClicked = false;
-                    //making sure user always has one button clicked
-                    twodp.setClickable(true);
+                    //prevent double clicking
                     fourdp.setClickable(false);
-                    sixdp.setClickable(true);
+
+                    toggleClickManager(twodp, sixdp);
                 }
                 if (buttonView == sixdp) {
-                    //making sure only one button is clicked at a time
-                    fourdp.setChecked(false);
-                    twodp.setChecked(false);
                     sixdpClicked = true;
                     twodpClicked = false;
                     fourdpClicked = false;
-                    //making sure user always has one button clicked
-                    twodp.setClickable(true);
-                    fourdp.setClickable(true);
+                    //prevent double clicking
                     sixdp.setClickable(false);
+
+                    toggleClickManager(twodp, fourdp);
                 } else {
                     // The toggle is disabled
                 }
@@ -207,7 +198,16 @@ public class ResultActivity extends AppCompatActivity {
         }
     };
 
-    public void hideToggleButtons() {
+    public void toggleClickManager(ToggleButton unclicked1, ToggleButton unclicked2) {
+        //making sure only one button is clicked at a time
+        unclicked1.setChecked(false);
+        unclicked2.setChecked(false);
+        //making sure user always has one button clicked
+        unclicked1.setClickable(true);
+        unclicked2.setClickable(true);
+    }
+
+    private void hideToggleButtons() {
         ImageView background = (ImageView)findViewById(R.id.toggleBackground);
         background.setVisibility(View.INVISIBLE);
         twodp.setVisibility(View.INVISIBLE);
@@ -215,7 +215,7 @@ public class ResultActivity extends AppCompatActivity {
         sixdp.setVisibility(View.INVISIBLE);
     }
 
-    public int chosenDecimalNum() {
+    private int chosenDecimalNum() {
         if (twodpClicked) {
             return 2;
         } else if (fourdpClicked) {
@@ -228,23 +228,16 @@ public class ResultActivity extends AppCompatActivity {
         return 0;
     }
 
-    public void animateTextView(String initialValue, String finalValue, final TextView textView) {
-        ValueAnimator valueAnimator = ValueAnimator.ofFloat(Float.valueOf(initialValue), Float.valueOf(finalValue));
+    private void animateTextView(String initialValue, String finalValue, final TextView textView, boolean hasDecimals) {
+        ValueAnimator valueAnimator;
+
+        if (hasDecimals) {
+            valueAnimator = ValueAnimator.ofFloat(Float.valueOf(initialValue), Float.valueOf(finalValue));
+        } else {
+            valueAnimator = ValueAnimator.ofInt(Integer.valueOf(initialValue), Integer.valueOf(finalValue));
+        }
+
         valueAnimator.setDuration(1000);
-
-        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                textView.setText(valueAnimator.getAnimatedValue().toString());
-            }
-        });
-        valueAnimator.start();
-    }
-
-    public void animateIntTextView(int initialValue, int finalValue, final TextView textView) {
-        ValueAnimator valueAnimator = ValueAnimator.ofInt(initialValue, finalValue);
-        valueAnimator.setDuration(1000);
-
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
@@ -795,7 +788,7 @@ public class ResultActivity extends AppCompatActivity {
             case "Celsius":
                 return value;
             case "Fahrenheit":
-                return (value*(9/5)) + 32.0;
+                return (value*(9.0/5.0)) + 32.0;
             case "Kelvin":
                 return value + 273.15;
         }
@@ -805,11 +798,11 @@ public class ResultActivity extends AppCompatActivity {
     private double fTo(String outputUnit, double value) {
         switch (outputUnit) {
             case "Celsius":
-                return (value - 32.0)*(5/9);
+                return (value - 32.0)*(5.0/9.0);
             case "Fahrenheit":
                 return value;
             case "Kelvin":
-                return (value - 32.0)*(5/9) + 273.15;
+                return (value - 32.0)*(5.0/9.0) + 273.15;
         }
         return 0;
     }
@@ -819,7 +812,7 @@ public class ResultActivity extends AppCompatActivity {
             case "Celsius":
                 return value - 273.15;
             case "Fahrenheit":
-                return (value - 273.15)*(9/5) + 32;
+                return (value - 273.15)*(9.0/5.0) + 32.0;
             case "Kelvin":
                 return value;
         }

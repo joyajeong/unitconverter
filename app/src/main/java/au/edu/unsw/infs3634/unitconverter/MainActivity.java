@@ -32,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
         tvNoNumberAlert = findViewById(R.id.tvNoNumberAlert);
         tvNoNumberAlert.setVisibility(View.INVISIBLE);
 
-        //spinner code adapted from https://developer.android.com/guide/topics/ui/controls/spinner
         unitTypeSpinner = (Spinner) findViewById(R.id.unitTypeChoice);
         inputSpinner = (Spinner) findViewById(R.id.inputChoices);
         outputSpinner = (Spinner) findViewById(R.id.outputChoices);
@@ -80,7 +79,6 @@ public class MainActivity extends AppCompatActivity {
         btnRandom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int randomA, randomB;
                 int[] randomUnits;
                 switch (unitType) {
                     case "Length":
@@ -154,6 +152,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean unitsSame() {
+
         //Showing a message when the user selects 2 same units
         if (inputUnit.equals(outputUnit)) {
             tvSameUnitAlert.setVisibility(View.VISIBLE);
@@ -167,11 +166,15 @@ public class MainActivity extends AppCompatActivity {
         public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
             ((TextView) parent.getChildAt(0)).setTextColor(Color.parseColor("#FFFFFF"));
             int spinnerId = parent.getId();
+            Log.e("output unit in listener", parent.getItemAtPosition(pos).toString());
+
             switch(spinnerId) {
                 case R.id.inputChoices:
                     inputUnit = parent.getItemAtPosition(pos).toString();
+                    break;
                 case R.id.outputChoices:
                     outputUnit  = parent.getItemAtPosition(pos).toString();
+                    break;
             }
         }
         @Override
