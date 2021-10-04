@@ -127,7 +127,6 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     showToast("Please enter a number");
                 }
-
             }
         });
     }

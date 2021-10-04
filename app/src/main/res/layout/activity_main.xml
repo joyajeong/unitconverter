@@ -32,9 +32,9 @@
         android:text="Enter a number to convert"
         android:textColor="@color/dark_grey"
         android:textSize="25sp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+        app:layout_constraintBottom_toBottomOf="@+id/logo"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="@+id/logo"
         app:layout_constraintVertical_bias="0.511" />
 
     <EditText
@@ -54,20 +54,18 @@
         android:textCursorDrawable="@drawable/colour_cursor"
         android:textSize="50sp"
         app:backgroundTint="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/btnBack"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvHeading"
-        app:layout_constraintVertical_bias="0.09" />
+        app:layout_constraintTop_toBottomOf="@+id/tvHeading" />
 
     <RelativeLayout
+        android:id="@+id/inputRelativeLayout"
         android:layout_width="124dp"
         android:layout_height="38dp"
+        android:layout_marginStart="28dp"
         android:layout_weight=".28"
         android:orientation="horizontal"
         android:textAlignment="gravity"
         app:layout_constraintBottom_toBottomOf="@+id/inputNumber"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.4"
         app:layout_constraintStart_toEndOf="@+id/inputNumber"
         app:layout_constraintTop_toTopOf="@+id/inputNumber"
         app:layout_constraintVertical_bias="1.0">
@@ -97,16 +95,14 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/relativeLayout"
+        android:id="@+id/outputRelativeLayout"
         android:layout_width="124dp"
         android:layout_height="38dp"
         android:layout_weight=".28"
         android:background="@drawable/spinners"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="@+id/btnBack"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.397"
-        app:layout_constraintStart_toEndOf="@+id/btnBack"
+        app:layout_constraintStart_toStartOf="@+id/inputRelativeLayout"
         app:layout_constraintTop_toTopOf="@+id/btnBack"
         app:layout_constraintVertical_bias="0.0">
 
@@ -135,21 +131,22 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnBack"
-        android:layout_width="168dp"
+        android:layout_width="173dp"
         android:layout_height="42dp"
-        android:layout_marginBottom="280dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/buttons"
         android:drawableRight="@drawable/ic_baseline_arrow_forward_24"
         android:paddingRight="10dp"
         android:text="Convert to "
         android:textColorHighlight="@color/pink"
         android:textColorLink="@color/pink"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/inputNumber"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/inputNumber" />
+        app:layout_constraintStart_toStartOf="@+id/inputNumber"
+        app:layout_constraintTop_toBottomOf="@+id/inputNumber" />
 
     <RelativeLayout
+        android:id="@+id/unitTypeRelativeLayout"
         android:layout_width="171dp"
         android:layout_height="60dp"
         android:layout_marginTop="64dp"
@@ -187,12 +184,12 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnRandom"
-        android:layout_width="120dp"
-        android:layout_height="34dp"
+        android:layout_width="132dp"
+        android:layout_height="42dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/buttons"
-        android:paddingRight="10dp"
         android:drawableRight="@drawable/ic_baseline_shuffle_24"
+        android:paddingRight="10dp"
         android:text="Random"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -200,9 +197,9 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="58dp"
-        android:layout_height="41dp"
+        android:id="@+id/logo"
+        android:layout_width="57dp"
+        android:layout_height="39dp"
         android:layout_marginStart="56dp"
         android:layout_marginTop="188dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -210,14 +207,14 @@
         app:srcCompat="@drawable/circle" />
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/logoArrow"
         android:layout_width="26dp"
         android:layout_height="28dp"
         android:rotation="90"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView"
-        app:layout_constraintEnd_toEndOf="@+id/imageView"
-        app:layout_constraintStart_toStartOf="@+id/imageView"
-        app:layout_constraintTop_toTopOf="@+id/imageView"
+        app:layout_constraintBottom_toBottomOf="@+id/logo"
+        app:layout_constraintEnd_toEndOf="@+id/logo"
+        app:layout_constraintStart_toStartOf="@+id/logo"
+        app:layout_constraintTop_toTopOf="@+id/logo"
         app:srcCompat="@drawable/ic_baseline_sync_alt_24" />
 
 
