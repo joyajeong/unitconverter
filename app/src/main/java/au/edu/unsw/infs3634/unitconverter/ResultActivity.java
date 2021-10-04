@@ -20,12 +20,11 @@ import java.text.NumberFormat;
 
 public class ResultActivity extends AppCompatActivity {
 
-    //make all the variables private?
     private ToggleButton twodp, fourdp, sixdp;
-    Boolean twodpClicked = true, fourdpClicked = false, sixdpClicked = false;
-    Double result;
-    TextView tvInputUnit, tvOutputUnit, tvInput, tvOutput, tvFormula;
-    String input, unitType, inputUnit, outputUnit, formattedResult;
+    private Boolean twodpClicked = true, fourdpClicked = false, sixdpClicked = false;
+    private Double result;
+    private TextView tvInputUnit, tvOutputUnit, tvInput, tvOutput, tvFormula;
+    private String input, unitType, inputUnit, outputUnit, formattedResult;
     int animateCount = 0;
 
     @Override
@@ -40,13 +39,12 @@ public class ResultActivity extends AppCompatActivity {
         inputUnit = bundle.getString("Input unit");
         outputUnit = bundle.getString("Output unit");
 
-        Log.i("TEST", "Hi");
         Log.i("INPUT", input);
         Log.i("INPUT UNIT", inputUnit);
         Log.i("OUTPUT UNIT", outputUnit);
 
         //Convert input from string to double
-        Double inputNum = Double.parseDouble(input);
+        double inputNum = Double.parseDouble(input);
         result = 0.0;
 
         //Calculate the result based on type of unit selected
@@ -57,9 +55,6 @@ public class ResultActivity extends AppCompatActivity {
             case "Mass":
                 result = massCalculate(inputUnit, outputUnit, inputNum);
                 break;
-            case "Time":
-                result = timeCalculate(inputUnit, outputUnit, inputNum);
-                break;
             case "Temperature":
                 result = tempCalculate(inputUnit, outputUnit, inputNum);
                 break;
@@ -68,9 +63,9 @@ public class ResultActivity extends AppCompatActivity {
         Log.i("RESULT", String.valueOf(result));
 
         //toggle buttons to choose decimal places
-        twodp = (ToggleButton)findViewById(R.id.tBtn2dp);
-        fourdp = (ToggleButton)findViewById(R.id.tBtn4dp);
-        sixdp = (ToggleButton)findViewById(R.id.tBtn6dp);
+        twodp = findViewById(R.id.tBtn2dp);
+        fourdp = findViewById(R.id.tBtn4dp);
+        sixdp = findViewById(R.id.tBtn6dp);
         //make 2 dp the default
         twodp.setChecked(true);
         twodp.setClickable(false);
@@ -95,7 +90,7 @@ public class ResultActivity extends AppCompatActivity {
 
         //display formula
         tvFormula = findViewById(R.id.tvForumla);
-        tvFormula.setText(Formula.getFormula(inputUnit, outputUnit));
+        tvFormula.setText(Formula.getFormulaFromInput(inputUnit, outputUnit));
 
         //when the back button is clicked
         Button back = findViewById(R.id.btnBack);
@@ -109,8 +104,7 @@ public class ResultActivity extends AppCompatActivity {
     }
 
     private String formatNumber(Double num, int dp) {
-        String formatted = String.format("%."+ dp +"f", num);
-        return formatted;
+        return String.format("%."+ dp +"f", num);
     }
 
     private void displayResults() {
@@ -135,12 +129,11 @@ public class ResultActivity extends AppCompatActivity {
         changeTextSize(digits, tvOutput);
 
         tvOutput.setText(formattedResult);
-        Log.i("formatted result", formattedResult);
     }
 
     private int numberOfDigits(String num) {
         int digits;
-        if (Double.valueOf(num) % 1 == 0) {
+        if (Double.parseDouble(num) % 1 == 0) {
             digits = num.length();
         } else {
             String[] splitter = num.split("\\.");
@@ -190,8 +183,6 @@ public class ResultActivity extends AppCompatActivity {
                     sixdp.setClickable(false);
 
                     toggleClickManager(twodp, fourdp);
-                } else {
-                    // The toggle is disabled
                 }
                 displayResults();
             }
@@ -208,7 +199,7 @@ public class ResultActivity extends AppCompatActivity {
     }
 
     private void hideToggleButtons() {
-        ImageView background = (ImageView)findViewById(R.id.toggleBackground);
+        ImageView background = findViewById(R.id.toggleBackground);
         background.setVisibility(View.INVISIBLE);
         twodp.setVisibility(View.INVISIBLE);
         fourdp.setVisibility(View.INVISIBLE);
@@ -232,9 +223,9 @@ public class ResultActivity extends AppCompatActivity {
         ValueAnimator valueAnimator;
 
         if (hasDecimals) {
-            valueAnimator = ValueAnimator.ofFloat(Float.valueOf(initialValue), Float.valueOf(finalValue));
+            valueAnimator = ValueAnimator.ofFloat(Float.parseFloat(initialValue), Float.parseFloat(finalValue));
         } else {
-            valueAnimator = ValueAnimator.ofInt(Integer.valueOf(initialValue), Integer.valueOf(finalValue));
+            valueAnimator = ValueAnimator.ofInt(Integer.parseInt(initialValue), Integer.parseInt(finalValue));
         }
 
         valueAnimator.setDuration(1000);
@@ -602,170 +593,6 @@ public class ResultActivity extends AppCompatActivity {
             case "Pound":
                 return value/16;
             case "Ounce":
-                return value;
-        }
-        return 0;
-    }
-
-    //-------------------------------CALCULATE TIME UNITS-------------------------------------//
-    private double timeCalculate(String inputUnit, String outputUnit, double value) {
-        if (inputUnit.equals("Second")) {
-            return secTo(outputUnit, value);
-        } else if (inputUnit.equals("Minute")) {
-            return minTo(outputUnit, value);
-        } else if (inputUnit.equals("Hour")) {
-            return hrTo(outputUnit, value);
-        } else if (inputUnit.equals("Day")) {
-            return dayTo(outputUnit, value);
-        } else if (inputUnit.equals("Week")) {
-            return weekTo(outputUnit, value);
-        } else if (inputUnit.equals("Month")) {
-            return monthTo(outputUnit, value);
-        } else if (inputUnit.equals("Calendar year")) {
-            return yearTo(outputUnit, value);
-        }
-        return 0;
-    }
-
-    private double secTo(String outputUnit, double value) {
-        switch (outputUnit) {
-            case "Second":
-                return value;
-            case "Minute":
-                return value/60;
-            case "Hour":
-                return value/3600;
-            case "Day":
-                return value/86400;
-            case "Week":
-                return value/604800;
-            case "Month":
-                return value/2628000;
-            case "Calendar year":
-                //this is for non-leap years - do one for leap years
-                return value/31536000;
-        }
-        return 0;
-    }
-
-    private double minTo(String outputUnit, double value) {
-        switch (outputUnit) {
-            case "Second":
-                return value*60;
-            case "Minute":
-                return value;
-            case "Hour":
-                return value/60;
-            case "Day":
-                return value/1440;
-            case "Week":
-                return value/10080;
-            case "Month":
-                //this is approximate
-                return value/43800;
-            case "Calendar year":
-                return value/525600;
-        }
-        return 0;
-    }
-
-    private double hrTo(String outputUnit, double value) {
-        switch (outputUnit) {
-            case "Second":
-                return value*3600;
-            case "Minute":
-                return value*60;
-            case "Hour":
-                return value;
-            case "Day":
-                return value/24;
-            case "Week":
-                return value/168;
-            case "Month":
-                return value/730;
-            case "Calendar year":
-                return value/8760;
-        }
-        return 0;
-    }
-
-    private double dayTo(String outputUnit, double value) {
-        switch (outputUnit) {
-            case "Second":
-                return value*86400;
-            case "Minute":
-                return value*1440;
-            case "Hour":
-                return value*24;
-            case "Day":
-                return value;
-            case "Week":
-                return value/7;
-            case "Month":
-                //change it depending on the month??
-                return value/30.417;
-            case "Calendar year":
-                return value/365;
-        }
-        return 0;
-    }
-
-    private double weekTo(String outputUnit, double value) {
-        switch (outputUnit) {
-            case "Second":
-                return value*604800;
-            case "Minute":
-                return value*10080;
-            case "Hour":
-                return value*168;
-            case "Day":
-                return value*7;
-            case "Week":
-                return value;
-            case "Month":
-                return value/4.345;
-            case "Calendar year":
-                return value/52.143;
-        }
-        return 0;
-    }
-    //this whole thing is approximate
-    private double monthTo(String outputUnit, double value) {
-        switch (outputUnit) {
-            case "Second":
-                return value*2628000;
-            case "Minute":
-                return value*43800;
-            case "Hour":
-                return value*730;
-            case "Day":
-                return value*30.417;
-            case "Week":
-                return value/4.345;
-            case "Month":
-                return value;
-            case "Calendar year":
-                return value/12;
-        }
-        return 0;
-    }
-
-    private double yearTo(String outputUnit, double value) {
-        switch (outputUnit) {
-            case "Second":
-                return value/31540000;
-            case "Minute":
-                return value*525600;
-            case "Hour":
-                return value*8760;
-            case "Day":
-                return value*365;
-            case "Week":
-                //depending on leap year
-                return value*52.143;
-            case "Month":
-                return value*12;
-            case "Calendar year":
                 return value;
         }
         return 0;
