@@ -20,6 +20,7 @@ import java.text.NumberFormat;
 
 public class ResultActivity extends AppCompatActivity {
 
+    private final int INT_MAX = 2147483647;
     private ToggleButton twodp, fourdp, sixdp;
     private Boolean twodpClicked = true, fourdpClicked = false, sixdpClicked = false;
     private Double result;
@@ -32,7 +33,7 @@ public class ResultActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
 
-        //receive input from MainActivity
+        //Receive input from MainActivity
         Bundle bundle = getIntent().getExtras();
         input = bundle.getString("Input value");
         unitType = bundle.getString("Unit type");
@@ -62,11 +63,11 @@ public class ResultActivity extends AppCompatActivity {
 
         Log.i("RESULT", String.valueOf(result));
 
-        //toggle buttons to choose decimal places
+        //Toggle buttons to choose decimal places
         twodp = findViewById(R.id.tBtn2dp);
         fourdp = findViewById(R.id.tBtn4dp);
         sixdp = findViewById(R.id.tBtn6dp);
-        //make 2 dp the default
+        //Make 2 dp the default
         twodp.setChecked(true);
         twodp.setClickable(false);
 
@@ -74,7 +75,7 @@ public class ResultActivity extends AppCompatActivity {
         fourdp.setOnCheckedChangeListener(changeChecker);
         sixdp.setOnCheckedChangeListener(changeChecker);
 
-        //display all the numbers and text
+        //Display all the numbers and text
         tvInputUnit = findViewById(R.id.tvInputUnit);
         tvOutputUnit = findViewById(R.id.tvOutputUnit);
         tvInput = findViewById(R.id.tvInput);
@@ -88,11 +89,11 @@ public class ResultActivity extends AppCompatActivity {
         tvInput.setText(input);
         displayResults();
 
-        //display formula
+        //Display formula
         tvFormula = findViewById(R.id.tvForumla);
         tvFormula.setText(Formula.getFormulaFromInput(inputUnit, outputUnit));
 
-        //when the back button is clicked
+        //When the back button is clicked
         Button back = findViewById(R.id.btnBack);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,20 +104,23 @@ public class ResultActivity extends AppCompatActivity {
         });
     }
 
-    private String formatNumber(Double num, int dp) {
-        return String.format("%."+ dp +"f", num);
-    }
-
     private void displayResults() {
         int digits;
         if (result % 1 == 0) {
-            //If the result is a whole number don't show the decimal toggle buttons
+            //If the result is an integer, don't show the decimal toggle buttons
             hideToggleButtons();
             formattedResult = formatNumber(result, 0);
-            animateTextView("0", formattedResult, tvOutput, false);
+
+            //If the number is larger than the maximum integer, the number needs to be animated as a float
+            if (Float.parseFloat(formattedResult) > INT_MAX) {
+                animateTextView("0", formattedResult, tvOutput, true);
+            } else {
+                animateTextView("0", formattedResult, tvOutput, false);
+            }
         } else {
             //If the result has decimals, format the number to show the selected number of decimals
             formattedResult = formatNumber(result, chosenDecimalNum());
+
             //Animate the results only once
             if (animateCount == 0) {
                 animateTextView("0", formattedResult, tvOutput, true);
@@ -129,6 +133,10 @@ public class ResultActivity extends AppCompatActivity {
         changeTextSize(digits, tvOutput);
 
         tvOutput.setText(formattedResult);
+    }
+
+    private String formatNumber(Double num, int dp) {
+        return String.format("%."+ dp +"f", num);
     }
 
     private int numberOfDigits(String num) {
@@ -153,7 +161,7 @@ public class ResultActivity extends AppCompatActivity {
         }
     }
 
-    //handling the toggle buttons
+    //Handling the toggle buttons
     CompoundButton.OnCheckedChangeListener changeChecker = new CompoundButton.OnCheckedChangeListener() {
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             if (isChecked) {
@@ -161,7 +169,7 @@ public class ResultActivity extends AppCompatActivity {
                     twodpClicked = true;
                     sixdpClicked = false;
                     fourdpClicked = false;
-                    //prevent double clicking
+                    //Prevent double clicking
                     twodp.setClickable(false);
 
                     toggleClickManager(fourdp, sixdp);
@@ -170,7 +178,7 @@ public class ResultActivity extends AppCompatActivity {
                     fourdpClicked = true;
                     twodpClicked = false;
                     sixdpClicked = false;
-                    //prevent double clicking
+                    //Prevent double clicking
                     fourdp.setClickable(false);
 
                     toggleClickManager(twodp, sixdp);
@@ -179,7 +187,7 @@ public class ResultActivity extends AppCompatActivity {
                     sixdpClicked = true;
                     twodpClicked = false;
                     fourdpClicked = false;
-                    //prevent double clicking
+                    //Prevent double clicking
                     sixdp.setClickable(false);
 
                     toggleClickManager(twodp, fourdp);
@@ -190,10 +198,10 @@ public class ResultActivity extends AppCompatActivity {
     };
 
     public void toggleClickManager(ToggleButton unclicked1, ToggleButton unclicked2) {
-        //making sure only one button is clicked at a time
+        //Making sure only one button is clicked at a time
         unclicked1.setChecked(false);
         unclicked2.setChecked(false);
-        //making sure user always has one button clicked
+        //Making sure user always has one button clicked
         unclicked1.setClickable(true);
         unclicked2.setClickable(true);
     }
@@ -241,22 +249,23 @@ public class ResultActivity extends AppCompatActivity {
     //Calculation formulas sourced from https://www.unitconverters.net/
     //-------------------------------CALCULATE LENGTH UNITS-------------------------------------//
     private double lengthCalculate(String inputUnit, String outputUnit, double value) {
-        if (inputUnit.equals("Kilometer")) {
-           return kmTo(outputUnit, value);
-        } else if (inputUnit.equals("Meter")) {
-            return mTo(outputUnit, value);
-        } else if (inputUnit.equals("Centimeter")) {
-            return cmTo(outputUnit, value);
-        } else if (inputUnit.equals("Millimeter")) {
-            return mmTo(outputUnit, value);
-        } else if (inputUnit.equals("Mile")) {
-            return miTo(outputUnit, value);
-        } else if (inputUnit.equals("Yard")) {
-            return ydTo(outputUnit, value);
-        } else if (inputUnit.equals("Foot")) {
-            return ftTo(outputUnit, value);
-        } else if (inputUnit.equals("Inch")) {
-            return inTo(outputUnit, value);
+        switch(inputUnit) {
+            case "Kilometer":
+                return kmTo(outputUnit, value);
+            case "Meter":
+                return mTo(outputUnit, value);
+            case "Centimeter":
+                return cmTo(outputUnit, value);
+            case "Millimeter":
+                return mmTo(outputUnit, value);
+            case "Mile":
+                return miTo(outputUnit, value);
+            case "Yard":
+                return ydTo(outputUnit, value);
+            case "Foot":
+                return ftTo(outputUnit, value);
+            case "Inch":
+                return inTo(outputUnit, value);
         }
         return 0;
     }
@@ -440,20 +449,21 @@ public class ResultActivity extends AppCompatActivity {
 
     //-------------------------------CALCULATE MASS UNITS-------------------------------------//
     private double massCalculate(String inputUnit, String outputUnit, double value) {
-        if (inputUnit.equals("Tonne")) {
-            return tTo(outputUnit, value);
-        } else if (inputUnit.equals("Kilogram")) {
-            return kgTo(outputUnit, value);
-        } else if (inputUnit.equals("Gram")) {
-            return gTo(outputUnit, value);
-        } else if (inputUnit.equals("Milligram")) {
-            return mgTo(outputUnit, value);
-        } else if (inputUnit.equals("Stone")) {
-            return stTo(outputUnit, value);
-        } else if (inputUnit.equals("Pound")) {
-            return lbTo(outputUnit, value);
-        } else if (inputUnit.equals("Ounce")) {
-            return ozTo(outputUnit, value);
+        switch(inputUnit) {
+            case "Tonne":
+                return tTo(outputUnit, value);
+            case "Kilogram":
+                return kgTo(outputUnit, value);
+            case "Gram":
+                return gTo(outputUnit, value);
+            case "Milligram":
+                return mgTo(outputUnit, value);
+            case "Stone":
+                return stTo(outputUnit, value);
+            case "Pound":
+                return lbTo(outputUnit, value);
+            case "Ounce":
+                return ozTo(outputUnit, value);
         }
         return 0;
     }
@@ -600,12 +610,13 @@ public class ResultActivity extends AppCompatActivity {
 
     //-------------------------------CALCULATE TEMPERATURE UNITS-------------------------------//
     private double tempCalculate(String inputUnit, String outputUnit, double value) {
-        if (inputUnit.equals("Celsius")) {
-            return cTo(outputUnit, value);
-        } else if (inputUnit.equals("Fahrenheit")) {
-            return fTo(outputUnit, value);
-        } else if (inputUnit.equals("Kelvin")) {
-            return kTo(outputUnit, value);
+        switch(inputUnit) {
+            case "Celsius":
+                return cTo(outputUnit, value);
+            case "Fahrenheit":
+                return fTo(outputUnit, value);
+            case "Kelvin":
+                return kTo(outputUnit, value);
         }
         return 0;
     }

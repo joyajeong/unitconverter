@@ -137,7 +137,7 @@ public class Formula {
 
         for (Formula f : list) {
             String[] formulaUnits = {f.getInputUnit(), f.getOutputUnit()};
-            //checks that the units match
+            //checks that the units match the formula
             if (findMatch(inputUnits, formulaUnits)) {
                 return f.getFormula();
             }

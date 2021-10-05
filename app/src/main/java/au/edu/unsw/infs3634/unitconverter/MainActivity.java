@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         inputSpinner = findViewById(R.id.inputChoices);
         outputSpinner = findViewById(R.id.outputChoices);
 
-        //changing the unit options based on the unit type chosen
+        //Changing the unit options based on the unit type chosen
         setSpinners(R.array.unit_types_array, unitTypeSpinner);
         unitTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -65,28 +65,28 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //when individual units are selected, assign selected units
+        //When individual units are selected, assign selected units
         inputSpinner.setOnItemSelectedListener(myListener);
         outputSpinner.setOnItemSelectedListener(myListener);
 
-        //when random button is clicked
+        //When random button is clicked
         Button btnRandom = findViewById(R.id.btnRandom);
         btnRandom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int[] randomUnits;
+                int[] randomNumbers;
                 switch (unitType) {
                     case "Length":
-                        randomUnits = generateRandomUnits(getResources().getStringArray(R.array.length_array));
-                        setRandomUnits(randomUnits);
+                        randomNumbers = generateRandomNumbers(getResources().getStringArray(R.array.length_array));
+                        setRandomUnits(randomNumbers);
                         break;
                     case "Mass":
-                        randomUnits = generateRandomUnits(getResources().getStringArray(R.array.mass_array));
-                        setRandomUnits(randomUnits);
+                        randomNumbers = generateRandomNumbers(getResources().getStringArray(R.array.mass_array));
+                        setRandomUnits(randomNumbers);
                         break;
                     case "Temperature":
-                        randomUnits = generateRandomUnits(getResources().getStringArray(R.array.temp_array));
-                        setRandomUnits(randomUnits);
+                        randomNumbers = generateRandomNumbers(getResources().getStringArray(R.array.temp_array));
+                        setRandomUnits(randomNumbers);
                         break;
                     default:
                         throw new RuntimeException("Cannot find unitType: " + unitType);
@@ -94,18 +94,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //when convert button is clicked
+        //When convert button is clicked
         Button btnConvert = findViewById(R.id.btnBack);
         btnConvert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String inputValue = input.getText().toString();
-                //user input validation - checking string is not empty
+
+                //User input validation - checking string is not empty
                 if (inputValue != null && inputValue.length() > 0) {
                     try {
-                        //user input validation - checking if input is a number
+                        //User input validation - checking if input is a number
                         double num = Double.parseDouble(inputValue);
-                        //user input validation - checking for length and mass, the input number is positive
+
+                        //User input validation - checking for length and mass, the input number is positive
                         if ((unitType.equals("Length") || unitType.equals("Mass")) && num < 0) {
                             showToast("Please enter a positive number");
                         }
@@ -116,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
                         intent.putExtra("Input unit", inputUnit);
                         intent.putExtra("Output unit", outputUnit);
 
-                        //checking if 2 same units are chosen e.g. km and km
+                        //Checking if 2 same units are chosen e.g. km and km
                         if (!unitsSame()) {
                             startActivity(intent);
                         }
@@ -156,13 +158,15 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    private int[] generateRandomUnits(String[] array) {
-        int[] randomUnits = new int[2];
+    //Generates 2 random numbers depending on the length of array
+    //e.g. for temperature array, it will only generate random numbers between 0-2 (celsius, fahrenheit, kelvin)
+    private int[] generateRandomNumbers(String[] array) {
+        int[] randomNumbers = new int[2];
         Random rand = new Random();
         for (int i = 0; i < 2; i++) {
-            randomUnits[i] = rand.nextInt(array.length);
+            randomNumbers[i] = rand.nextInt(array.length);
         }
-        return randomUnits;
+        return randomNumbers;
     }
 
     private void setRandomUnits(int[] randomUnits) {
